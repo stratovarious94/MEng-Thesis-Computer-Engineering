@@ -60,7 +60,7 @@ class Trainer:
                                      save_weights_only=True, mode='auto')]
 
         history = self.model.fit(self.train_gen, steps_per_epoch=self.train_steps,
-                                 validation_data=self.valid_gen, validation_steps=self.test_steps, epochs=50,
+                                 validation_data=self.valid_gen, validation_steps=self.valid_steps, epochs=50,
                                  verbose=1, callbacks=callbacks)
 
         with open(self.path_to_history, 'wb') as f:
