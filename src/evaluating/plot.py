@@ -1,10 +1,9 @@
 import pickle
-from itertools import compress
 
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import confusion_matrix, plot_confusion_matrix
+from sklearn.metrics import confusion_matrix
 
 from config import path_to_history, path_to_plots, path_to_test_set, path_to_predictions, img_format
 
@@ -13,7 +12,14 @@ import pandas as pd
 
 
 class Plotter:
+    """
+    Responsible for producing all the plots
+    """
     def __init__(self, model_name):
+        """
+        Loads the predictions, the test set and the training history
+        :param model_name: chosen model's name
+        """
         self.model_name = model_name
         test_set = pd.read_csv('{}/{}/{}'.format(path_to_test_set, img_format, 'test.csv'))
         self.label_names = pd.read_csv('{}/{}/{}'.format(path_to_test_set, img_format, 'test.csv')).columns[3:]
@@ -35,7 +41,10 @@ class Plotter:
                     break
 
     def plot(self):
-        # print(confusion_matrix(self.true_labels, (np.array(self.predicted_labels) > 0.2).astype(int).squeeze()))
+        """
+        Creates consusion matrices and loss plots for each label
+        """
+        # process for creating the heatmap grid for each of the labels truth matrices in absolute values
         fig, ax = plt.subplots(5, 4, sharex=True, sharey=True, figsize=(7, 9))
         for i in range(20):
             if i < len(self.label_names):
@@ -55,6 +64,7 @@ class Plotter:
         plt.tight_layout()
         plt.savefig('{}/{}_absolute_heatmap.png'.format(path_to_plots, self.model_name))
 
+        # process for creating the heatmap grid for each of the labels truth matrices in percentage values
         fig, ax = plt.subplots(5, 4, sharex=True, sharey=True, figsize=(7, 9))
         for i in range(20):
             if i < len(self.label_names):
@@ -74,6 +84,7 @@ class Plotter:
         plt.tight_layout()
         plt.savefig('{}/{}_percentage_heatmap.png'.format(path_to_plots, self.model_name))
 
+        # process for creating the lineplot for the loss against the validation loss during the training process
         plt.plot(list(range(len(self.history[0]['loss']))), self.history[0]['loss'], color='skyblue', linewidth=1)
         plt.plot(list(range(len(self.history[0]['val_loss']))), self.history[0]['val_loss'], color='orange', linewidth=1)
         plt.legend(['Training set', 'Validation set'], loc='upper right')

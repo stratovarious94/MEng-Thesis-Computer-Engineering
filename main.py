@@ -6,30 +6,25 @@ from src.machine_learning.train import Trainer
 from src.machine_learning.predict import Predictor
 from src.evaluating.evaluate import Evaluator
 from src.evaluating.plot import Plotter
+from src.evaluating.explainable_convnets import Explainer
 
+"""
+Interface for the available actions that can be performed in the available models
 
-# python main.py preprocess
+Command generic type: python main.py <action> <model>
 
-# python main.py train vgg16
-# python main.py predict vgg16
-# python main.py evaluate vgg16
-# python main.py pipeline vgg16
+action: [preprocess, train, predict, evaluate, plot, explain, pipeline]
+model: [vgg16, resnet, densenet, mobilenet, efficientnet, vit]
 
-# python main.py train efficientnet
-# python main.py predict efficientnet
-# python main.py evaluate efficientnet
-# python main.py pipeline efficientnet
+pipeline option calls the whole core pipeline for the model (train, predict, evaluate)
+"""
 
-# python main.py train vit
-# python main.py predict vit
-# python main.py evaluate vit
-# python main.py pipeline vit
 action, model_name = sys.argv[1:3]
 if action == 'preprocess':
     Preprocessor().preprocessing_pipeline()
 elif action == 'train':
     img_gen = ImageGenerator()
-    Trainer(img_gen.get_train_generator(), img_gen.get_valid_generator(), model_name).train()
+    Trainer(img_gen.get_train_generator(), img_gen.get_valid_generator(), img_gen.get_test_generator(), model_name).train()
 elif action == 'predict':
     img_gen = ImageGenerator()
     Predictor(img_gen.get_test_generator(), model_name).predict()
@@ -37,6 +32,8 @@ elif action == 'evaluate':
     Evaluator(model_name).evaluate()
 elif action == 'plot':
     Plotter(model_name).plot()
+elif action == 'explain':
+    Explainer(model_name).explain()
 elif action == 'pipeline':
     img_gen = ImageGenerator()
     Trainer(img_gen.get_train_generator(), img_gen.get_valid_generator(), model_name).train()

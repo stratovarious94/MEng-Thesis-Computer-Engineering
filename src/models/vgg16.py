@@ -3,6 +3,11 @@ from tensorflow.keras.models import Model
 
 
 def create_model(img_dim):
+    """
+    Architecture of the VGG16 model (baseline model)
+    :param img_dim: expected image dimensions (width, height, channels)
+    :return: Model
+    """
     model_input = Input(shape=img_dim)
 
     # Block 1
