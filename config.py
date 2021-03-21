@@ -10,13 +10,13 @@ path_to_plots = 'data/plots/'
 path_to_explainable = 'data/explainable/'
 
 # general settings for all the models
-input_size = 64
-batch_size = 128
+input_size = 256
+batch_size = 16
 num_classes = 17
 path_to_img_directory = 'd:/datasets/amazon/train/'
-color_mode = 'rgba'
-channels = 4
-img_format = 'tif'
+color_mode = 'rgb'
+channels = 3
+img_format = 'jpg'
 
 # vision transformer exclusive settings
 vit_settings = {

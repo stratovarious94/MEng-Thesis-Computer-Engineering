@@ -31,10 +31,10 @@ class Preprocessor:
 
     def __split_dataset(self):
         """
-        Split the dataset 60/20/20 train/valid/test
+        Split the dataset into train/valid/test
         """
-        self.train, _, self.valid, _ = train_test_split(self.data, self.data, test_size=0.4)
-        self.valid, _, self.test, _ = train_test_split(self.valid, self.valid, test_size=0.5)
+        self.train, self.valid, _, _ = train_test_split(self.data, self.data, test_size=0.2)
+        self.valid, self.test, _, _ = train_test_split(self.valid, self.valid, test_size=0.5)
 
     def __save_datasets(self):
         """

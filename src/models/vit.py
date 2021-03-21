@@ -30,14 +30,14 @@ class MultiHeadSelfAttention:
     def attention(self, query, key, value):
         # matrix multiplication:
         # [batch_size, num_heads, n_patches+1, d_model//num_heads] @
-        # [batch_size, num_heads, n_patches+1, d_model//num_heads] ->
+        # [batch_size, num_heads, n_patches+1, d_model//num_heads].T ->
         # [batch_size, num_heads, n_patches+1, num_heads]. For each head how much it aligns with the other heads
         score = tf.matmul(query, key, transpose_b=True)
         # get the shape of the last dimension of key which is: d_model//num_heads
         dim_key = tf.cast(tf.shape(key)[-1], tf.float32)
         # rescale the scores of the matrix multiplication
         scaled_score = score / tf.math.sqrt(dim_key)
-        # get the softmax of the alighment between the heads which is a [batch_size, n_patches+1, num_heads] tensor
+        # get the softmax of the alignment between the heads which is a [batch_size, n_patches+1, num_heads] tensor
         weights = tf.nn.softmax(scaled_score, axis=-1)
         # get the output for the calculated attention weights: [batch_size, num_heads, n_patches+1, d_model//num_heads]
         output = tf.matmul(weights, value)

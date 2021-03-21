@@ -15,6 +15,7 @@ class PrimaryStatistics:
     This module is independent and is not used by the rest of the project
     """
     def __init__(self, model_name):
+        self.model_name = model_name
         self.test_set = pd.read_csv('../../{}/{}/{}'.format(path_to_test_set, img_format, 'test.csv'))
         self.true_labels = self.test_set[self.test_set.columns[3:]].values
         self.predicted_labels = []
@@ -70,7 +71,7 @@ class PrimaryStatistics:
             res.append([true[i], pred[i]])
 
         res_df = pd.DataFrame(res, columns=['true_labels', 'predicted_labels'])
-        res_df.to_excel('true_pred_pairs.xlsx')
+        res_df.to_excel('true_pred_pairs_{}.xlsx'.format(self.model_name))
 
 
-PrimaryStatistics("vit").truth_pred_pairs()
+PrimaryStatistics("efficientnet").truth_pred_pairs()
